@@ -2,30 +2,21 @@ package br.com.power.sense.model;
 
 import java.time.LocalDate;
 
+import br.com.power.sense.model.abstracts.Pessoa;
 import br.com.power.sense.model.enums.SexoEnum;
+import lombok.Getter;
+import lombok.Setter;
 
-public class ResidenteModel {
+@Getter
+@Setter
+public class ResidenteModel extends Pessoa{
 
-	private String nome;
-	
-	private String cpf;
-	
-	private LocalDate dataNascimento;
-	
-	private SexoEnum sexo;
-	
 	private String parentescoComContratante;
 	
 	private String cpfContratante;
 
-	public ResidenteModel() {
-	}
-
 	public ResidenteModel(String nome, String cpf, LocalDate dataNascimento, SexoEnum sexo, String parentescoComContratante, String cpfContratante) {
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.sexo = sexo;
+		super(nome, cpf, dataNascimento, sexo);
 		this.parentescoComContratante = parentescoComContratante;
 		this.cpfContratante = cpfContratante;
 	}
