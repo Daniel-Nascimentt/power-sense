@@ -24,7 +24,7 @@ public class EletrodomesticoController {
     private EletrodomesticoService service;
 
     @GetMapping ("/{id}")
-    public ResponseEntity<?> detalharEletrodomestico (@PathVariable @NotNull Long id){
+    public ResponseEntity<?> detalharEletrodomestico(@PathVariable @NotNull Long id){
         EletrodomesticoResponse eletrodomesticoResponse;
 
         try {

@@ -1,16 +1,15 @@
 package br.com.power.sense.service;
 
-import br.com.power.sense.dto.response.EletrodomesticoResponse;
-import br.com.power.sense.model.EletrodomesticoModel;
-import br.com.power.sense.dto.request.EletrodomesticoRequest;
-import br.com.power.sense.repository.EletrodomesticoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
+import br.com.power.sense.dto.request.EletrodomesticoRequest;
+import br.com.power.sense.dto.response.EletrodomesticoResponse;
+import br.com.power.sense.model.EletrodomesticoModel;
+import br.com.power.sense.repository.EletrodomesticoRepository;
 
 @Service
 public class EletrodomesticoService {
@@ -22,7 +21,6 @@ public class EletrodomesticoService {
     private EletrodomesticoRepository eletrodomesticos;
 
     public EletrodomesticoResponse cadastrarEletrodomestico(EletrodomesticoRequest eletrodomesticoRequest){
-        eletrodomesticoRequest.setId(new Random().nextLong(Long.MAX_VALUE));
         EletrodomesticoModel eletrodomesticoModel = modelMapper.map(eletrodomesticoRequest, EletrodomesticoModel.class);
         eletrodomesticos.incluir(eletrodomesticoModel.getId(), eletrodomesticoModel);
         return modelMapper.map(eletrodomesticoModel, EletrodomesticoResponse.class);

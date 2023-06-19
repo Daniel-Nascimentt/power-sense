@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EletrodomesticoRequest {
-    private Long id;
-    @NotBlank
+
+	@NotBlank
     private String nome;
     @NotBlank
     private String modelo;

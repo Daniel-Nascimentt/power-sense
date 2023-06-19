@@ -68,6 +68,7 @@ public class EnderecoController {
 
         return ResponseEntity.ok().body(enderecoResponse);
     }
+    
     @GetMapping
     public Page<EnderecoResponse> listarTodos (@PageableDefault(size = 10) Pageable paginacao){
         return enderecoService.obterTodos(paginacao);
