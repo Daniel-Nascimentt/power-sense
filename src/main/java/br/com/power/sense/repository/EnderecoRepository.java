@@ -33,12 +33,12 @@ public class EnderecoRepository {
         return listaEnderecosModels.stream().filter(p -> p.getId().equals(id)).findFirst();
     }
 
-    public Page listarTodos (Pageable paginacao){
+    public Page<?> listarTodos (Pageable paginacao){
         List<EnderecoModel> listaEnderecosModels = new ArrayList<>();
         for (Map.Entry<Long, EnderecoModel> endereco : enderecos.entrySet()) {
             listaEnderecosModels.add(endereco.getValue());
         }
-        return new PageImpl(listaEnderecosModels, paginacao, listaEnderecosModels.size());
+        return new PageImpl<>(listaEnderecosModels, paginacao, listaEnderecosModels.size());
     }
 
     public Optional<EnderecoModel> atualizar (Long id, EnderecoModel enderecoModel){

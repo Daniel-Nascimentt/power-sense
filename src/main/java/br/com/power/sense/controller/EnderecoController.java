@@ -24,15 +24,14 @@ public class EnderecoController {
     private EnderecoService enderecoService;
 
     @PostMapping
-    public ResponseEntity cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest,
-                                                              UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest,UriComponentsBuilder uriBuilder) {
         EnderecoResponse enderecoResponse = enderecoService.cadastrarEndereco(enderecoRequest);
         URI endereco = uriBuilder.path("/enderecos/{id}").buildAndExpand(enderecoResponse.getId()).toUri();
         return ResponseEntity.created(endereco).body(enderecoResponse);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizarEndereco (@PathVariable @NotNull Long id, @RequestBody @Valid EnderecoRequest enderecoRequest) {
+    public ResponseEntity<?> atualizarEndereco (@PathVariable @NotNull Long id, @RequestBody @Valid EnderecoRequest enderecoRequest) {
         EnderecoResponse enderecoResponse;
 
         try {
@@ -45,7 +44,7 @@ public class EnderecoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluirEndereco (@PathVariable @NotNull Long id){
+    public ResponseEntity<?> excluirEndereco (@PathVariable @NotNull Long id){
         EnderecoResponse enderecoResponse;
 
         try {
@@ -58,7 +57,7 @@ public class EnderecoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity detalharEndereco (@PathVariable @NotNull Long id) {
+    public ResponseEntity<?> detalharEndereco (@PathVariable @NotNull Long id) {
         EnderecoResponse enderecoResponse;
 
         try {

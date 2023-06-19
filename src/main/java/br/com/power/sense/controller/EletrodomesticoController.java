@@ -24,7 +24,7 @@ public class EletrodomesticoController {
     private EletrodomesticoService service;
 
     @GetMapping ("/{id}")
-    public ResponseEntity detalharEletrodomestico (@PathVariable @NotNull Long id){
+    public ResponseEntity<?> detalharEletrodomestico (@PathVariable @NotNull Long id){
         EletrodomesticoResponse eletrodomesticoResponse;
 
         try {
@@ -42,19 +42,17 @@ public class EletrodomesticoController {
     }
 
     @PostMapping
-    public ResponseEntity cadastrarEletrodomestico (@RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<?> cadastrarEletrodomestico (@RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest, UriComponentsBuilder uriBuilder){
         EletrodomesticoResponse eletrodomesticoResponse = service.cadastrarEletrodomestico(eletrodomesticoRequest);
         URI endereco = uriBuilder.path("/eletrodomesticos/{id}").buildAndExpand(eletrodomesticoResponse.getId()).toUri();
-        return ResponseEntity.created(endereco).body(eletrodomesticoResponse
-        );
+        return ResponseEntity.created(endereco).body(eletrodomesticoResponse);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizarEletrodomestico (@PathVariable @NotNull Long id, @RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest){
-        EletrodomesticoResponse eletrodomesticoResponse;
+    public ResponseEntity<?> atualizarEletrodomestico (@PathVariable @NotNull Long id, @RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest){
 
         try {
-            eletrodomesticoResponse = service.atualizarEletrodomestico(id, eletrodomesticoRequest);
+        	service.atualizarEletrodomestico(id, eletrodomesticoRequest);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Eletrodoméstico inexistente");
         }
@@ -63,7 +61,7 @@ public class EletrodomesticoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluirEletrodomestico (@PathVariable @NotNull Long id){
+    public ResponseEntity<?> excluirEletrodomestico (@PathVariable @NotNull Long id){
         EletrodomesticoResponse eletrodomesticoResponse;
         try {
             eletrodomesticoResponse = service.excluirEletrodomestico(id);

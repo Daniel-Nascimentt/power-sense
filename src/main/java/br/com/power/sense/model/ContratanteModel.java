@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ContratanteModel extends Pessoa{
+public class ContratanteModel extends Pessoa {
 
 	public ContratanteModel(String nome, String cpf, LocalDate dataNascimento, SexoEnum sexo) {
 		super(nome, cpf, dataNascimento, sexo);
