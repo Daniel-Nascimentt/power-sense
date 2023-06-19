@@ -1,6 +1,7 @@
 package br.com.power.sense.dto.response;
 
 import br.com.power.sense.model.enums.EstadoEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Schema
 public class EnderecoResponse {
 
     @NotNull
