@@ -42,7 +42,7 @@ public class EletrodomesticoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrarEletrodomestico (@RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<EletrodomesticoResponse> cadastrarEletrodomestico (@RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest, UriComponentsBuilder uriBuilder){
         EletrodomesticoResponse eletrodomesticoResponse = service.cadastrarEletrodomestico(eletrodomesticoRequest);
         URI endereco = uriBuilder.path("/eletrodomesticos/{id}").buildAndExpand(eletrodomesticoResponse.getId()).toUri();
         return ResponseEntity.created(endereco).body(eletrodomesticoResponse);
@@ -51,23 +51,24 @@ public class EletrodomesticoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizarEletrodomestico (@PathVariable @NotNull Long id, @RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest){
 
+    	EletrodomesticoResponse atualizarEletrodomestico;	
+    	
         try {
-        	service.atualizarEletrodomestico(id, eletrodomesticoRequest);
+        	 atualizarEletrodomestico = service.atualizarEletrodomestico(id, eletrodomesticoRequest);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Eletrodoméstico inexistente");
         }
 
-        return ResponseEntity.ok().body(eletrodomesticoRequest);
+        return ResponseEntity.ok().body(atualizarEletrodomestico);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirEletrodomestico (@PathVariable @NotNull Long id){
-        EletrodomesticoResponse eletrodomesticoResponse;
         try {
-            eletrodomesticoResponse = service.excluirEletrodomestico(id);
+            service.excluirEletrodomestico(id);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Eletrodomestico inexistente");
         }
-        return ResponseEntity.ok().body(eletrodomesticoResponse);
+        return ResponseEntity.ok().build();
     }
 }
