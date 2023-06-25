@@ -1,5 +1,6 @@
 package br.com.power.sense.dto.request;
 
+import br.com.power.sense.model.EletrodomesticoModel;
 import br.com.power.sense.model.enums.VoltagemEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,4 +19,9 @@ public class EletrodomesticoRequest {
     private Long potencia;
     @NotNull
     private VoltagemEnum voltagemEnum;
+    
+    public EletrodomesticoModel toModel() {
+    	return new EletrodomesticoModel(this.nome, this.modelo, this.potencia, this.voltagemEnum);
+    }
+    
 }

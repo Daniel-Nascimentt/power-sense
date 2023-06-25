@@ -19,4 +19,12 @@ public class EletrodomesticoModel {
     private Long potencia;
     @NotNull
     private VoltagemEnum voltagemEnum;
+	public EletrodomesticoModel(@NotBlank String nome, @NotBlank String modelo, @NotNull Long potencia, @NotNull VoltagemEnum voltagemEnum) {
+		this.nome = nome;
+		this.modelo = modelo;
+		this.potencia = potencia;
+		this.voltagemEnum = voltagemEnum;
+	}
+    
+    
 }

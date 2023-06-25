@@ -1,20 +1,26 @@
 package br.com.power.sense.controller;
 
-import br.com.power.sense.dto.request.EnderecoRequest;
-import br.com.power.sense.dto.response.EnderecoResponse;
-import br.com.power.sense.service.EnderecoService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import br.com.power.sense.dto.request.EnderecoRequest;
+import br.com.power.sense.dto.response.EnderecoResponse;
+import br.com.power.sense.service.EnderecoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/enderecos")
@@ -23,55 +29,46 @@ public class EnderecoController {
     @Autowired
     private EnderecoService enderecoService;
 
-    @PostMapping
-    public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest,UriComponentsBuilder uriBuilder) {
+    @PostMapping(value = "cadastrar")
+    public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest, UriComponentsBuilder uriBuilder) {
+    	
         EnderecoResponse enderecoResponse = enderecoService.cadastrarEndereco(enderecoRequest);
-        URI endereco = uriBuilder.path("/enderecos/{id}").buildAndExpand(enderecoResponse.getId()).toUri();
+        URI endereco = uriBuilder.path("/enderecos/buscar/{id}").buildAndExpand(enderecoResponse.getId()).toUri();
+        
         return ResponseEntity.created(endereco).body(enderecoResponse);
+        
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarEndereco (@PathVariable @NotNull Long id, @RequestBody @Valid EnderecoRequest enderecoRequest) {
-        EnderecoResponse enderecoResponse;
+	@PutMapping(value = "/atualizar/{id}")
+	public ResponseEntity<?> atualizarEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoRequest enderecoRequest) {
 
-        try {
-            enderecoResponse = enderecoService.atualizarEndereco(id, enderecoRequest);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body("Endereco inexistente");
-        }
+		EnderecoResponse enderecoResponse = enderecoService.atualizarEndereco(id, enderecoRequest);
 
-        return ResponseEntity.ok().body(enderecoResponse);
-    }
+		return ResponseEntity.ok().body(enderecoResponse);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluirEndereco (@PathVariable @NotNull Long id){
-        EnderecoResponse enderecoResponse;
+	@DeleteMapping(value = "/deletar/{id}")
+	public ResponseEntity<?> excluirEndereco(@PathVariable Long id) {
 
-        try {
-            enderecoResponse = enderecoService.excluirEndereco(id);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body("Endereco inexistente");
-        }
+		EnderecoResponse enderecoResponse = enderecoService.excluirEndereco(id);
 
-        return ResponseEntity.ok().body(enderecoResponse);
-    }
+		return ResponseEntity.ok().body(enderecoResponse);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> detalharEndereco (@PathVariable @NotNull Long id) {
-        EnderecoResponse enderecoResponse;
+	@GetMapping(value = "/buscar/{id}")
+	public ResponseEntity<?> detalharEndereco(@PathVariable Long id) {
 
-        try {
-            enderecoResponse = enderecoService.obterPorID(id);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body("Endereco inexistente");
-        }
+		EnderecoResponse enderecoResponse = enderecoService.buscarPorId(id);
 
-        return ResponseEntity.ok().body(enderecoResponse);
-    }
+		return ResponseEntity.ok().body(enderecoResponse);
+	}
     
-    @GetMapping
+    @GetMapping(value = "/buscarTodos")
     public Page<EnderecoResponse> listarTodos (@PageableDefault(size = 10) Pageable paginacao){
-        return enderecoService.obterTodos(paginacao);
+    	
+    	Page<EnderecoResponse> enderecos = enderecoService.obterTodos(paginacao);
+    	
+        return enderecos;
     }
 
 }

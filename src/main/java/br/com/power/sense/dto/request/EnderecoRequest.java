@@ -1,5 +1,6 @@
 package br.com.power.sense.dto.request;
 
+import br.com.power.sense.model.EnderecoModel;
 import br.com.power.sense.model.enums.EstadoEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,5 +25,9 @@ public class EnderecoRequest {
     private String cidade;
     @NotNull
     private EstadoEnum estado;
+    
+    public EnderecoModel toModel() {
+    	return new EnderecoModel(this.rua, this.numero, this.bairro, this.cidade, this.estado);
+    }
 
 }
