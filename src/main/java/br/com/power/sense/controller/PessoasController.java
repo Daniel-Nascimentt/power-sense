@@ -49,9 +49,8 @@ public class PessoasController {
 	@GetMapping(value = "/buscarContratante/{cpf}")
 	public ResponseEntity<ContratanteResponse> buscarContratante(@PathVariable("cpf") String cpf) {
 		
-		pessoasService.buscarContratante(cpf);
-		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(pessoasService.buscarContratante(cpf));
+	
 	}
 	
 	
