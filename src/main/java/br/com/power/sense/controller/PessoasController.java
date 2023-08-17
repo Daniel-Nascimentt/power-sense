@@ -97,6 +97,4 @@ public class PessoasController {
 		
 		return ResponseEntity.ok().build();
 	}
-
-	
 }
