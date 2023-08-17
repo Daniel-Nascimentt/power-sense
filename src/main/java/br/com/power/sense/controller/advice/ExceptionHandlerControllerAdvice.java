@@ -1,7 +1,6 @@
 package br.com.power.sense.controller.advice;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.power.sense.dto.response.ErrorResponseDetails;
+import br.com.power.sense.exceptions.CpfNotFoundException;
 
 
 @ControllerAdvice
@@ -30,6 +30,17 @@ public class ExceptionHandlerControllerAdvice {
 				"Por favor, verifique se todos os campos foram preenchidos corretamente!", 
 				HttpStatus.BAD_REQUEST.value(), 
 				fieldsError,
+				new Date().getTime()));
+	}
+
+	@ExceptionHandler(CpfNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<?> CpfNotFoundExceptionException(CpfNotFoundException ex){
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDetails(
+				"CPF não encontrado", 
+				HttpStatus.BAD_REQUEST.value(), 
+				new ArrayList<>(),
 				new Date().getTime()));
 	}
 	

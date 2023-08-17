@@ -1,13 +1,12 @@
 package br.com.power.sense.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.power.sense.dto.request.ContratanteRequest;
 import br.com.power.sense.dto.request.ResidenteRequest;
 import br.com.power.sense.dto.response.ContratanteResponse;
+import br.com.power.sense.exceptions.CpfNotFoundException;
 import br.com.power.sense.model.ContratanteModel;
 import br.com.power.sense.model.ResidenteModel;
 import br.com.power.sense.model.repository.ContratanteRepository;
@@ -26,21 +25,15 @@ public class PessoasService {
 		
 	}
 
-	public void salvarResidente(ResidenteRequest request) {
+	public void salvarResidente(ResidenteRequest request) throws CpfNotFoundException {
 
-		ResidenteModel residente = request.toModel();
+		ResidenteModel residente = request.toModel(contratanteRepository);
 		
 	}
 
 	public ContratanteResponse buscarContratante(String cpf) {
 		
-		Optional<ContratanteModel> possivelContratante = contratanteRepository.findByCpf(cpf);
-		
-		if(!possivelContratante.isPresent()) {
-			// devolve not found
-		}
-		
-		return new ContratanteResponse(possivelContratante.get());
+		return null;
 		
 	}
 
@@ -49,12 +42,6 @@ public class PessoasService {
 	}
 
 	public void atualizarContratante(String cpf) {
-		
-		Optional<ContratanteModel> possivelContratante = contratanteRepository.findByCpf(cpf);
-
-		if(!possivelContratante.isPresent()) {
-			// devolve not found
-		}
 		
 	}
 
