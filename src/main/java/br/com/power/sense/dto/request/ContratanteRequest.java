@@ -34,5 +34,4 @@ public class ContratanteRequest {
 	public ContratanteModel toModel() {
 		return new ContratanteModel(this.nome, this.cpf, this.dataNascimento, this.sexo);
 	}
-	
 }

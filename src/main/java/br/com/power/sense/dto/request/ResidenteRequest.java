@@ -3,6 +3,7 @@ package br.com.power.sense.dto.request;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import br.com.power.sense.model.repository.ResidenteRepository;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,20 +39,15 @@ public class ResidenteRequest {
 	@NotBlank
 	private String parentescoComContratante;
 	
-	@NotBlank
-	@CPF
-	private String cpfContratante;
+	@NotNull
+	private ContratanteRequest contratante;
 	
-	public ResidenteModel toModel(ContratanteRepository contratanteRepository) throws CpfNotFoundException {
-		
-		Optional<ContratanteModel> possivelContratante = contratanteRepository.findByCpf(this.cpfContratante);
-		
-		if(possivelContratante.isPresent()) {
-			return new ResidenteModel(this.nome, this.cpf, this.dataNascimento, this.sexo, this.parentescoComContratante, possivelContratante.get());
-		}
-
-		throw new CpfNotFoundException("CPF não encontrado.");
-		
+	public ResidenteModel toModel() {
+		return new ResidenteModel(this.nome,
+				this.cpf,
+				this.dataNascimento,
+				this.sexo,
+				this.parentescoComContratante,
+				this.contratante.toModel());
 	}
-
 }

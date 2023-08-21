@@ -29,8 +29,8 @@ public class ContratanteModel {
 
 	private SexoEnum sexo;
 	
-	@OneToMany(mappedBy = "contratanteModel")
-	private List<ResidenteModel> residenteModel;
+	@OneToMany(mappedBy = "contratante")
+	private List<ResidenteModel> residentes;
 
 	public ContratanteModel() {
 	}
@@ -41,6 +41,12 @@ public class ContratanteModel {
 		this.dataNascimento = dataNascimento;
 		this.sexo = sexo;
 	}
-	
-	
+
+	public ContratanteModel(Long id, String nome, String cpf, LocalDate dataNascimento, SexoEnum sexo) {
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.sexo = sexo;
+	}
 }

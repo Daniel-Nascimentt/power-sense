@@ -31,18 +31,18 @@ public class ResidenteModel{
 	private String parentescoComContratante;
 
 	@ManyToOne
-	private ContratanteModel contratanteModel;	
+	private ContratanteModel contratante;
 	
 	public ResidenteModel() {
 	}
 
-	public ResidenteModel(String nome, String cpf, LocalDate dataNascimento, SexoEnum sexo, String parentescoComContratante, ContratanteModel contratanteModel) {
+	public ResidenteModel(String nome, String cpf, LocalDate dataNascimento, SexoEnum sexo, String parentescoComContratante, ContratanteModel contratante) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
 		this.sexo = sexo;
 		this.parentescoComContratante = parentescoComContratante;
-		this.contratanteModel = contratanteModel;
+		this.contratante = contratante;
 	}
 
 	
