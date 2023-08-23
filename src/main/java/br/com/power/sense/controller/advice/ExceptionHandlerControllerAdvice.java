@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,6 +41,17 @@ public class ExceptionHandlerControllerAdvice {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDetails(
 				"CPF não encontrado", 
 				HttpStatus.BAD_REQUEST.value(), 
+				new ArrayList<>(),
+				new Date().getTime()));
+	}
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> ControllerNotFoundException(EntityNotFoundException ex){
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
+				"Entidade não encontrada",
+				HttpStatus.NOT_FOUND.value(),
 				new ArrayList<>(),
 				new Date().getTime()));
 	}
