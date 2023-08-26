@@ -1,5 +1,6 @@
 package br.com.power.sense.dto.response;
 
+import br.com.power.sense.model.EnderecoModel;
 import br.com.power.sense.model.enums.EstadoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -25,4 +26,12 @@ public class EnderecoResponse {
     @NotNull
     private EstadoEnum estado;
 
+    public EnderecoResponse(EnderecoModel enderecoModel) {
+        this.id = enderecoModel.getId();
+        this.rua = enderecoModel.getRua();
+        this.numero = enderecoModel.getNumero();
+        this.bairro = enderecoModel.getBairro();
+        this.cidade = enderecoModel.getCidade();
+        this.estado = enderecoModel.getEstado();
+    }
 }

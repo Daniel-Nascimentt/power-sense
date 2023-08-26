@@ -1,58 +1,48 @@
 package br.com.power.sense.controller;
 
-import java.net.URI;
-
+import br.com.power.sense.dto.request.EnderecoRequest;
+import br.com.power.sense.dto.response.EnderecoResponse;
+import br.com.power.sense.exceptions.DatabaseException;
+import br.com.power.sense.service.EnderecoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import br.com.power.sense.dto.request.EnderecoRequest;
-import br.com.power.sense.dto.response.EnderecoResponse;
-import br.com.power.sense.service.EnderecoService;
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/enderecos")
 public class EnderecoController {
 
-    @Autowired
-    private EnderecoService enderecoService;
+	@Autowired
+	private EnderecoService enderecoService;
 
-    @PostMapping(value = "cadastrar")
-    public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest, UriComponentsBuilder uriBuilder) {
-    	
-        EnderecoResponse enderecoResponse = enderecoService.cadastrarEndereco(enderecoRequest);
-        URI endereco = uriBuilder.path("/enderecos/buscar/{id}").buildAndExpand(enderecoResponse.getId()).toUri();
-        
-        return ResponseEntity.created(endereco).body(enderecoResponse);
-        
-    }
+	@PostMapping(value = "/cadastrar")
+	public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest) {
+
+		enderecoService.cadastrarEndereco(enderecoRequest);
+
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+
+	}
 
 	@PutMapping(value = "/atualizar/{id}")
 	public ResponseEntity<?> atualizarEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoRequest enderecoRequest) {
 
-		EnderecoResponse enderecoResponse = enderecoService.atualizarEndereco(id, enderecoRequest);
+		enderecoService.atualizarEndereco(id, enderecoRequest);
 
-		return ResponseEntity.ok().body(enderecoResponse);
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping(value = "/deletar/{id}")
-	public ResponseEntity<?> excluirEndereco(@PathVariable Long id) {
+	public ResponseEntity<?> excluirEndereco(@PathVariable Long id) throws DatabaseException {
 
-		EnderecoResponse enderecoResponse = enderecoService.excluirEndereco(id);
+		enderecoService.excluirEndereco(id);
 
-		return ResponseEntity.ok().body(enderecoResponse);
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping(value = "/buscar/{id}")
@@ -64,11 +54,9 @@ public class EnderecoController {
 	}
     
     @GetMapping(value = "/buscarTodos")
-    public Page<EnderecoResponse> listarTodos (@PageableDefault(size = 10) Pageable paginacao){
-    	
-    	Page<EnderecoResponse> enderecos = enderecoService.obterTodos(paginacao);
-    	
-        return enderecos;
-    }
+    public Page<EnderecoResponse> listarTodos (@PageableDefault(size = 10) Pageable paginacao) {
+
+		return enderecoService.obterTodos(paginacao);
+	}
 
 }
