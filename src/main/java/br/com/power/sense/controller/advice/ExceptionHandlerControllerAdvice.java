@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
 import br.com.power.sense.exceptions.*;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,18 @@ public class ExceptionHandlerControllerAdvice {
 				new ArrayList<>(),
 				new Date().getTime()));
 	}
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> ControllerNotFoundException(EntityNotFoundException ex){
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
+				"Entidade não encontrada",
+				HttpStatus.NOT_FOUND.value(),
+				new ArrayList<>(),
+				new Date().getTime()));
+	}
+
 
 	@ExceptionHandler(NomeNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)

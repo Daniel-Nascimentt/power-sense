@@ -2,6 +2,7 @@ package br.com.power.sense.controller;
 
 import java.net.URI;
 
+import br.com.power.sense.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,7 +66,7 @@ public class EletrodomesticoController {
 	}
 
 	@DeleteMapping(value = "/deletar/{id}")
-	public ResponseEntity<?> excluirEletrodomestico(@PathVariable @NotNull Long id) {
+	public ResponseEntity<?> excluirEletrodomestico(@PathVariable @NotNull Long id) throws DatabaseException {
 		service.excluirEletrodomestico(id);
 		return ResponseEntity.ok().build();
 	}
