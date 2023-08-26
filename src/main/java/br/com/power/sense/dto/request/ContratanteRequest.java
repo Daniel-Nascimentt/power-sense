@@ -46,4 +46,11 @@ public class ContratanteRequest {
 	public ContratanteModel toModel() {
 		return new ContratanteModel(this.nome, this.cpf, this.dataNascimento, this.sexo);
 	}
+
+	public void toUpdateModel(ContratanteModel contratanteModel) {
+		contratanteModel.setNome(this.nome);
+		contratanteModel.setCpf(this.cpf);
+		contratanteModel.setDataNascimento(this.dataNascimento);
+		contratanteModel.setSexo(this.sexo);
+	}
 }

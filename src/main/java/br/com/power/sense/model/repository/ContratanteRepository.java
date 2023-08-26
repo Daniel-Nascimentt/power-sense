@@ -8,7 +8,6 @@ import br.com.power.sense.model.ContratanteModel;
 
 
 public interface ContratanteRepository extends JpaRepository<ContratanteModel, Long>{
-
 	Optional<ContratanteModel> findByCpf(String cpf);
 
 }

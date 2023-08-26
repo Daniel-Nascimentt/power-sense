@@ -40,7 +40,15 @@ public class EletrodomesticoResponse {
     }
 
     public EletrodomesticoResponse(EletrodomesticoModel eletroSave) {
-        toResponseEletroDomestico(eletroSave);
+
+        toResponse(eletroSave);
+
+    }
+
+
+    public EletrodomesticoResponse toResponseEletroDomesticoAll(EletrodomesticoModel eletroSave) {
+
+        toResponse(eletroSave);
 
         if(eletroSave.getContratanteUtiliza() != null) {
             this.contratanteUtiliza = new ContratanteResponse().toResponseEletrodomestico(eletroSave.getContratanteUtiliza());
@@ -50,17 +58,10 @@ public class EletrodomesticoResponse {
             this.residentesUtilizam.add(new ResidenteResponse().toResponseEletrodomestico(resid));
         });
 
-
-    }
-
-
-    public EletrodomesticoResponse toResponseByCpf(EletrodomesticoModel eletroSave) {
-        toResponseEletroDomestico(eletroSave);
-
         return this;
     }
 
-    private void toResponseEletroDomestico(EletrodomesticoModel eletroSave) {
+    public void toResponse(EletrodomesticoModel eletroSave) {
         this.id = eletroSave.getId();
         this.nome = eletroSave.getNome();
         this.modelo = eletroSave.getModelo();

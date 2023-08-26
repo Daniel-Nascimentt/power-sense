@@ -45,7 +45,7 @@ public class PessoasController {
 
 
     @GetMapping(value = "/buscarContratante/{cpf}")
-    public ResponseEntity<ContratanteResponse> buscarContratante(@PathVariable("cpf") String cpf) {
+    public ResponseEntity<ContratanteResponse> buscarContratante(@PathVariable("cpf") String cpf) throws CpfNotFoundException {
 
         return ResponseEntity.ok(pessoasService.buscarContratante(cpf));
 
@@ -60,12 +60,10 @@ public class PessoasController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping(value = "/atualizarContratante/{cpf}")
-    public ResponseEntity<?> atualizarContratante(@PathVariable("cpf") String cpf) {
+    @PutMapping(value = "/atualizarContratante")
+    public ResponseEntity<?> atualizarContratante(@RequestBody @Valid ContratanteRequest request) throws CpfNotFoundException {
 
-        pessoasService.atualizarContratante(cpf);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(pessoasService.atualizarContratante(request));
     }
 
 
@@ -78,7 +76,7 @@ public class PessoasController {
     }
 
     @DeleteMapping(value = "/deletarContratante/{cpf}")
-    public ResponseEntity<?> deletarContratante(@PathVariable("cpf") String cpf) {
+    public ResponseEntity<?> deletarContratante(@PathVariable("cpf") String cpf) throws CpfNotFoundException {
 
         pessoasService.deletarContratante(cpf);
 

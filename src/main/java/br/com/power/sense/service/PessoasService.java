@@ -3,6 +3,7 @@ package br.com.power.sense.service;
 import br.com.power.sense.dto.response.ResidenteResponse;
 import br.com.power.sense.exceptions.*;
 import br.com.power.sense.model.repository.ResidenteRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,17 +38,45 @@ public class PessoasService {
 
     }
 
-    public void atualizarContratante(String cpf) {
+    public ContratanteResponse atualizarContratante(@Valid ContratanteRequest request) throws CpfNotFoundException {
+
+        Optional<ContratanteModel> contratante = contratanteRepository.findByCpf(request.getCpf());
+
+        if(!contratante.isPresent()){
+            throw new CpfNotFoundException("CPF do Contratante não localizado");
+        }
+
+        ContratanteModel contratanteModel = contratante.get();
+
+        request.toUpdateModel(contratanteModel);
+
+        contratanteRepository.save(contratanteModel);
+
+        return new ContratanteResponse(contratanteModel);
 
     }
 
-    public ContratanteResponse buscarContratante(String cpf) {
+    public ContratanteResponse buscarContratante(String cpf) throws CpfNotFoundException {
 
-        return null;
+        Optional<ContratanteModel> contratante = contratanteRepository.findByCpf(cpf);
+
+        if(!contratante.isPresent()){
+            throw new CpfNotFoundException("CPF do Residente não localizado");
+        }
+
+        return new ContratanteResponse(contratante.get());
 
     }
 
-    public void deletarContratante(String cpf) {
+    public void deletarContratante(String cpf) throws CpfNotFoundException {
+
+        Optional<ContratanteModel> contratante = contratanteRepository.findByCpf(cpf);
+
+        if(!contratante.isPresent()){
+            throw new CpfNotFoundException("CPF do Contratante não localizado");
+        }
+
+        contratanteRepository.delete(contratante.get());
 
     }
 

@@ -1,6 +1,7 @@
 package br.com.power.sense.controller.advice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class ExceptionHandlerControllerAdvice {
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDetails(
 				"CPF não encontrado", 
-				HttpStatus.BAD_REQUEST.value(), 
-				new ArrayList<>(),
+				HttpStatus.BAD_REQUEST.value(),
+				Arrays.asList(ex.getMessage()),
 				new Date().getTime()));
 	}
 
@@ -53,7 +54,7 @@ public class ExceptionHandlerControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
 				"Entidade não encontrada",
 				HttpStatus.NOT_FOUND.value(),
-				new ArrayList<>(),
+				Arrays.asList(ex.getMessage()),
 				new Date().getTime()));
 	}
 
@@ -65,16 +66,16 @@ public class ExceptionHandlerControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
 				"Nome não encontrado",
 				HttpStatus.NOT_FOUND.value(),
-				new ArrayList<>(),
+				Arrays.asList(ex.getMessage()),
 				new Date().getTime()));
 	}
 
-	public class GlobalControllerExceptionHandler {
-		@ExceptionHandler(ConversionFailedException.class)
-		public ResponseEntity<String> handleConflict(RuntimeException ex) {
-			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> genericException(Exception ex) {
+		return new ResponseEntity<>("Algo Inesperado ocorreu.", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
 
 	@ExceptionHandler(ResidenteInvalidoException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -83,7 +84,7 @@ public class ExceptionHandlerControllerAdvice {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDetails(
 				"Esse CPF já é cadastrado como contratante.",
 				HttpStatus.BAD_REQUEST.value(),
-				new ArrayList<>(),
+				Arrays.asList(ex.getMessage()),
 				new Date().getTime()));
 	}
 }

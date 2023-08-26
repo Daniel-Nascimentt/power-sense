@@ -40,7 +40,7 @@ public class EletrodomesticoService {
     public EletrodomesticoResponse cadastrarEletrodomestico(EletrodomesticoRequest eletrodomesticoRequest){
         EletrodomesticoModel eletrodomestico = eletrodomesticoRequest.toModel(contratanteRepository, residenteRepository);
         var eletroSave = repository.save(eletrodomestico);
-        return new EletrodomesticoResponse(eletroSave);
+        return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletroSave);
     }
 
      public EletrodomesticoResponse atualizarEletrodomestico(EletrodomesticoRequest eletrodomesticoRequest){
@@ -54,12 +54,14 @@ public class EletrodomesticoService {
 
             if(eletrodomesticoRequest.getUtilizadoPorCpfs().isEmpty()){
                 eletrodomesticoModel.toUpdateEletro(eletrodomesticoRequest);
-                return new EletrodomesticoResponse(eletrodomesticoModel);
+                repository.save(eletrodomesticoModel);
+                return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletrodomesticoModel);
             }
 
             eletrodomesticoModel.toUpdateAll(eletrodomesticoRequest, contratanteRepository, residenteRepository);
+            repository.save(eletrodomesticoModel);
 
-            return new EletrodomesticoResponse(eletrodomesticoModel);
+            return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletrodomesticoModel);
 
     }
 
@@ -76,7 +78,7 @@ public class EletrodomesticoService {
     public EletrodomesticoResponse obterEletrodomesticoPorId(Long id) {
         Optional<EletrodomesticoModel> eletrodomestico = repository.findById(id);
         validaSeEletrodomesticoExiste(eletrodomestico);
-        return new EletrodomesticoResponse(eletrodomestico.get());
+        return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletrodomestico.get());
     }
 
 
@@ -92,7 +94,7 @@ public class EletrodomesticoService {
 
         if(contratante.isPresent()){
             List<EletrodomesticoModel> eletrodomesticosContratante = repository.findByContratanteUtiliza(contratante.get());
-            eletrodomesticosContratante.forEach(elet -> listResponse.add(new EletrodomesticoResponse().toResponseByCpf(elet)));
+            eletrodomesticosContratante.forEach(elet -> listResponse.add(new EletrodomesticoResponse(elet)));
 
             return listResponse;
         }
@@ -101,7 +103,7 @@ public class EletrodomesticoService {
 
         if(residente.isPresent()){
             List<EletrodomesticoModel> eletrodomesticosResidente = repository.findByresidentesUtilizam(residente.get());
-            eletrodomesticosResidente.forEach(elet -> listResponse.add(new EletrodomesticoResponse().toResponseByCpf(elet)));
+            eletrodomesticosResidente.forEach(elet -> listResponse.add(new EletrodomesticoResponse(elet)));
 
             return listResponse;
         }
