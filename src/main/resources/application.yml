@@ -9,13 +9,12 @@ spring:
       show-sql: true
       format-sql: true 
     hibernate:
-      ddl-auto: update  
-  
+      ddl-auto: update
+  flyway:
+    baseline-on-migrate: true
 
 server:
   error:
     include-binding-errors: never
     include-message: always
     include-stacktrace: never
-  
-    

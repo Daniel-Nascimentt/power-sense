@@ -7,6 +7,7 @@ import br.com.power.sense.model.enums.SexoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @Setter
@@ -22,7 +23,7 @@ public class ResidenteResponse {
 	private SexoEnum sexo;
 	
 	private String parentescoComContratante;
-	
+
 	private ContratanteResponse contratante;
 
 	public ResidenteResponse(ResidenteModel residenteModel) {
@@ -33,6 +34,7 @@ public class ResidenteResponse {
 
 		this.parentescoComContratante = residenteModel.getParentescoComContratante();
 
+		contratante = new ContratanteResponse();
 		this.contratante.setNome(residenteModel.getContratante().getNome());
 		this.contratante.setCpf(residenteModel.getContratante().getCpf());
 		this.contratante.setDataNascimento(residenteModel.getContratante().getDataNascimento());

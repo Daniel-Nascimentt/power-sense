@@ -4,11 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import br.com.power.sense.model.enums.SexoEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,7 +25,7 @@ public class ContratanteModel {
 
 	private SexoEnum sexo;
 	
-	@OneToMany(mappedBy = "contratante")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "contratante")
 	private List<ResidenteModel> residentes;
 
 	public ContratanteModel() {

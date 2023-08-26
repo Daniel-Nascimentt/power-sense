@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.com.power.sense.exceptions.*;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.power.sense.dto.response.ErrorResponseDetails;
-import br.com.power.sense.exceptions.CpfNotFoundException;
 
 
 @ControllerAdvice
@@ -43,5 +44,55 @@ public class ExceptionHandlerControllerAdvice {
 				new ArrayList<>(),
 				new Date().getTime()));
 	}
-	
+
+	@ExceptionHandler(NomeNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> NomeNotFoundExceptionException(NomeNotFoundException ex){
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
+				"Nome não encontrado",
+				HttpStatus.NOT_FOUND.value(),
+				new ArrayList<>(),
+				new Date().getTime()));
+	}
+
+	@ExceptionHandler(DataNascimentoNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> DataNascimentoNotFoundExceptionException(DataNascimentoNotFoundException ex){
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
+				"Data de Nascimento não encontrada",
+				HttpStatus.NOT_FOUND.value(),
+				new ArrayList<>(),
+				new Date().getTime()));
+	}
+
+	@ExceptionHandler(ParentescoNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> ParentescoNotFoundExceptionException(ParentescoNotFoundException ex){
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
+				"Parentesco não encontrado",
+				HttpStatus.NOT_FOUND.value(),
+				new ArrayList<>(),
+				new Date().getTime()));
+	}
+
+	@ExceptionHandler(SexoNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> SexoNotFoundExceptionException(SexoNotFoundException ex){
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
+				"Sexo não encontrado",
+				HttpStatus.NOT_FOUND.value(),
+				new ArrayList<>(),
+				new Date().getTime()));
+	}
+
+	public class GlobalControllerExceptionHandler {
+		@ExceptionHandler(ConversionFailedException.class)
+		public ResponseEntity<String> handleConflict(RuntimeException ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 }

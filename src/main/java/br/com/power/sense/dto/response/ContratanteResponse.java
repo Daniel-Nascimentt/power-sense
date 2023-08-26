@@ -20,8 +20,10 @@ public class ContratanteResponse {
 	private LocalDate dataNascimento;
 
 	private SexoEnum sexo;
-	
-	
+
+	public ContratanteResponse() {
+	}
+
 	public ContratanteResponse(ContratanteModel contratanteModel) {
 		this.nome = contratanteModel.getNome();
 		this.cpf = contratanteModel.getCpf();
