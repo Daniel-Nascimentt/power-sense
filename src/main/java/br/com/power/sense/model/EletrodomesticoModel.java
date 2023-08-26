@@ -1,20 +1,23 @@
 package br.com.power.sense.model;
 
+import br.com.power.sense.dto.request.EletrodomesticoRequest;
 import br.com.power.sense.model.enums.VoltagemEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import br.com.power.sense.model.repository.ContratanteRepository;
+import br.com.power.sense.model.repository.ResidenteRepository;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity(name = "ELETRODOMESTICO")
 public class EletrodomesticoModel {
-    @NotNull
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,14 +27,46 @@ public class EletrodomesticoModel {
     private String modelo;
     @NotNull
     private Long potencia;
+    @Enumerated(EnumType.STRING)
     @NotNull
     private VoltagemEnum voltagemEnum;
+    @ManyToOne
+    private ContratanteModel contratanteUtiliza;
+    @ManyToMany
+    private List<ResidenteModel> residentesUtilizam = new ArrayList<>();
+
+    /**
+     * Para uso do framework
+     */
+    @Deprecated
+    public EletrodomesticoModel(){
+
+    }
+
 	public EletrodomesticoModel(@NotBlank String nome, @NotBlank String modelo, @NotNull Long potencia, @NotNull VoltagemEnum voltagemEnum) {
 		this.nome = nome;
 		this.modelo = modelo;
 		this.potencia = potencia;
 		this.voltagemEnum = voltagemEnum;
 	}
-    
-    
+
+    public void addResidenteUtilizacao(ResidenteModel residenteModel){
+        this.residentesUtilizam.add(residenteModel);
+    }
+
+    public void toUpdateEletro(EletrodomesticoRequest eletrodomesticoRequest) {
+        updateFieldsEletrodomestico(eletrodomesticoRequest);
+    }
+
+    public void toUpdateAll(EletrodomesticoRequest eletrodomesticoRequest, ContratanteRepository contratanteRepository, ResidenteRepository residenteRepository) {
+        updateFieldsEletrodomestico(eletrodomesticoRequest);
+        eletrodomesticoRequest.toModelContratanteEResidente(contratanteRepository, residenteRepository, this);
+    }
+
+    private void updateFieldsEletrodomestico(EletrodomesticoRequest eletrodomesticoRequest) {
+        this.nome = eletrodomesticoRequest.getNome();
+        this.modelo = eletrodomesticoRequest.getModelo();
+        this.potencia = eletrodomesticoRequest.getPotencia();
+        this.voltagemEnum = eletrodomesticoRequest.getVoltagemEnum();
+    }
 }

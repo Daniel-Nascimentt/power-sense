@@ -1,6 +1,7 @@
 package br.com.power.sense.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import br.com.power.sense.model.enums.SexoEnum;
 import jakarta.persistence.*;
@@ -29,6 +30,9 @@ public class ResidenteModel{
 
 	@ManyToOne
 	private ContratanteModel contratante;
+
+	@ManyToMany(mappedBy = "residentesUtilizam")
+	private List<EletrodomesticoModel> eletrosUtilizados;
 	
 	public ResidenteModel() {
 	}

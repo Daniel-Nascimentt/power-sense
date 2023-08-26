@@ -60,7 +60,7 @@ public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(NomeNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> NomeNotFoundExceptionException(NomeNotFoundException ex){
+	public ResponseEntity<?> nomeNotFoundExceptionException(NomeNotFoundException ex){
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
 				"Nome não encontrado",
@@ -74,5 +74,16 @@ public class ExceptionHandlerControllerAdvice {
 		public ResponseEntity<String> handleConflict(RuntimeException ex) {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@ExceptionHandler(ResidenteInvalidoException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<?> residenteInvalidoExceptionException(ResidenteInvalidoException ex){
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDetails(
+				"Esse CPF já é cadastrado como contratante.",
+				HttpStatus.BAD_REQUEST.value(),
+				new ArrayList<>(),
+				new Date().getTime()));
 	}
 }

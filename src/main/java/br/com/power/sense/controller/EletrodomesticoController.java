@@ -1,7 +1,9 @@
 package br.com.power.sense.controller;
 
 import java.net.URI;
+import java.util.List;
 
+import br.com.power.sense.exceptions.CpfNotFoundException;
 import br.com.power.sense.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,7 +34,7 @@ public class EletrodomesticoController {
     private EletrodomesticoService service;
 
 	@GetMapping("/buscar/{id}")
-	public ResponseEntity<?> detalharEletrodomestico(@PathVariable @NotNull Long id) {
+	public ResponseEntity<?> detalharEletrodomestico(@PathVariable(value = "id") Long id) {
 
 		EletrodomesticoResponse eletrodomesticoResponse = service.obterEletrodomesticoPorId(id);
 
@@ -41,32 +43,37 @@ public class EletrodomesticoController {
 
     @GetMapping(value = "/buscarTodos")
     public Page<EletrodomesticoResponse> listarEletrodomesticos (@PageableDefault(size = 10) Pageable paginacao){
-    	
+
     	Page<EletrodomesticoResponse> eletrodomesticos = service.obterTodos(paginacao);
-    	
+
         return eletrodomesticos;
     }
+
+	@GetMapping(value = "/buscarTodos/{cpf}")
+	public ResponseEntity<List<EletrodomesticoResponse>> listarEletrodomesticosPorCPF(@PathVariable("cpf") String cpf) throws CpfNotFoundException {
+		return ResponseEntity.ok(service.obterTodosPorCpf(cpf));
+	}
 
     @PostMapping(value = "/cadastrar")
     public ResponseEntity<EletrodomesticoResponse> cadastrarEletrodomestico (@RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest, UriComponentsBuilder uriBuilder){
         
     	EletrodomesticoResponse eletrodomesticoResponse = service.cadastrarEletrodomestico(eletrodomesticoRequest);
-        URI endereco = uriBuilder.path("/eletrodomesticos/buscar/{id}").buildAndExpand(eletrodomesticoResponse.getId()).toUri();
+        URI uriLocation = uriBuilder.path("/eletrodomesticos/buscar/{id}").buildAndExpand(eletrodomesticoResponse.getId()).toUri();
       
-        return ResponseEntity.created(endereco).body(eletrodomesticoResponse);
+        return ResponseEntity.created(uriLocation).body(eletrodomesticoResponse);
     
     }
 
-	@PutMapping(value = "/atualiziar/{id}")
-	public ResponseEntity<?> atualizarEletrodomestico(@PathVariable @NotNull Long id, @RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest) {
+	@PutMapping(value = "/atualiziar")
+	public ResponseEntity<?> atualizarEletrodomestico(@RequestBody @Valid EletrodomesticoRequest eletrodomesticoRequest) {
 
-		EletrodomesticoResponse atualizarEletrodomestico = service.atualizarEletrodomestico(id, eletrodomesticoRequest);
+		EletrodomesticoResponse eletrodomenticoAtualizado = service.atualizarEletrodomestico(eletrodomesticoRequest);
 
-		return ResponseEntity.ok().body(atualizarEletrodomestico);
+		return ResponseEntity.ok().body(eletrodomenticoAtualizado);
 	}
 
 	@DeleteMapping(value = "/deletar/{id}")
-	public ResponseEntity<?> excluirEletrodomestico(@PathVariable @NotNull Long id) throws DatabaseException {
+	public ResponseEntity<?> excluirEletrodomestico(@PathVariable("id") Long id) throws DatabaseException {
 		service.excluirEletrodomestico(id);
 		return ResponseEntity.ok().build();
 	}

@@ -6,6 +6,7 @@ import br.com.power.sense.dto.response.ContratanteResponse;
 import br.com.power.sense.dto.response.ResidenteResponse;
 import br.com.power.sense.exceptions.CpfNotFoundException;
 import br.com.power.sense.exceptions.NomeNotFoundException;
+import br.com.power.sense.exceptions.ResidenteInvalidoException;
 import br.com.power.sense.service.PessoasService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class PessoasController {
 
 
     @PostMapping(value = "/novoResidente")
-    public ResponseEntity<?> cadastrarNovoResidente(@RequestBody @Valid ResidenteRequest request) throws CpfNotFoundException {
+    public ResponseEntity<?> cadastrarNovoResidente(@RequestBody @Valid ResidenteRequest request) throws CpfNotFoundException, ResidenteInvalidoException {
 
         pessoasService.salvarResidente(request);
 

@@ -7,6 +7,7 @@ import java.util.List;
 import br.com.power.sense.model.ContratanteModel;
 import br.com.power.sense.model.ResidenteModel;
 import br.com.power.sense.model.enums.SexoEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +17,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Setter
 @Schema
 public class ResidenteResponse {
-	
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String nome;
-	
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String cpf;
-	
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private LocalDate dataNascimento;
-	
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private SexoEnum sexo;
-	
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String parentescoComContratante;
 
-	private ContratanteResponse contratante = new ContratanteResponse();;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private ContratanteResponse contratante;
 
 	public ResidenteResponse (){
 
@@ -53,12 +60,21 @@ public class ResidenteResponse {
 
 		ContratanteModel contratanteModel = residenteModel.getContratante();
 
+		this.contratante = new ContratanteResponse();
+
 		this.contratante.setNome(contratanteModel.getNome());
 		this.contratante.setCpf(contratanteModel.getCpf());
-		this.contratante.setDataNascimento(contratanteModel.getDataNascimento());
-		this.contratante.setSexo(contratanteModel.getSexo());
 
 		return this;
 
 	}
+
+
+	public ResidenteResponse toResponseEletrodomestico(ResidenteModel residenteModel) {
+		this.nome = residenteModel.getNome();
+		this.cpf = residenteModel.getCpf();
+
+		return this;
+	}
+
 }

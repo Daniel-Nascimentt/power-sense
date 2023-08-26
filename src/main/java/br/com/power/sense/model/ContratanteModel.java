@@ -29,6 +29,13 @@ public class ContratanteModel {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "contratante")
 	private List<ResidenteModel> residentes;
 
+	@OneToMany(mappedBy = "contratanteUtiliza")
+	private List<EletrodomesticoModel> eletrosUtilizados;
+
+	/**
+	 * Para uso do frameword
+	 */
+	@Deprecated
 	public ContratanteModel() {
 	}
 

@@ -51,7 +51,13 @@ public class PessoasService {
 
     }
 
-    public void salvarResidente(ResidenteRequest request) throws CpfNotFoundException {
+    public void salvarResidente(ResidenteRequest request) throws CpfNotFoundException, ResidenteInvalidoException {
+
+        Optional<ContratanteModel> contratante = contratanteRepository.findByCpf(request.getCpf());
+
+        if(contratante.isPresent()){
+            throw new ResidenteInvalidoException("Esse CPF já é cadastrado como contratante.");
+        }
 
         ResidenteModel residente = request.toModel(contratanteRepository);
 
