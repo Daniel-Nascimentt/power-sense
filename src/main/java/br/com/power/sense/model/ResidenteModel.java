@@ -22,6 +22,7 @@ public class ResidenteModel{
 
 	private LocalDate dataNascimento;
 
+	@Enumerated(EnumType.STRING)
 	private SexoEnum sexo;
 
 	private String parentescoComContratante;

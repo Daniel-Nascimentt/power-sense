@@ -23,6 +23,7 @@ public class ContratanteModel {
 
 	private LocalDate dataNascimento;
 
+	@Enumerated(EnumType.STRING)
 	private SexoEnum sexo;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "contratante")

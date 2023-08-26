@@ -15,11 +15,5 @@ public interface ResidenteRepository extends JpaRepository<ResidenteModel, Long>
 
     List<ResidenteModel> findByNome(String nome);
 
-    List<ResidenteModel> findByDataNascimento(LocalDate dataNascimento);
-
-    List<ResidenteModel> findBySexo(SexoEnum sexo);
-
-    List<ResidenteModel> findByParentescoComContratante(String parentescoComContratante);
-
     List<ResidenteModel> findByContratante(ContratanteModel contratanteModel);
 }
