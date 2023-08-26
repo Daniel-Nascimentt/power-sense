@@ -32,6 +32,9 @@ public class ContratanteModel {
 	@OneToMany(mappedBy = "contratanteUtiliza")
 	private List<EletrodomesticoModel> eletrosUtilizados;
 
+	@OneToMany(mappedBy = "contratante")
+	private List<EnderecoModel> enderecos;
+
 	/**
 	 * Para uso do frameword
 	 */

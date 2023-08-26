@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import br.com.power.sense.service.EnderecoNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import br.com.power.sense.exceptions.*;
 import org.springframework.core.convert.ConversionFailedException;
@@ -38,7 +39,7 @@ public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(CpfNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ResponseEntity<?> CpfNotFoundExceptionException(CpfNotFoundException ex){
+	public ResponseEntity<?> CpfNotFoundException(CpfNotFoundException ex){
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDetails(
 				"CPF não encontrado", 
@@ -61,7 +62,7 @@ public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(NomeNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> nomeNotFoundExceptionException(NomeNotFoundException ex){
+	public ResponseEntity<?> nomeNotFoundException(NomeNotFoundException ex){
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
 				"Nome não encontrado",
@@ -79,11 +80,22 @@ public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(ResidenteInvalidoException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ResponseEntity<?> residenteInvalidoExceptionException(ResidenteInvalidoException ex){
+	public ResponseEntity<?> residenteInvalidoException(ResidenteInvalidoException ex){
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDetails(
 				"Esse CPF já é cadastrado como contratante.",
 				HttpStatus.BAD_REQUEST.value(),
+				Arrays.asList(ex.getMessage()),
+				new Date().getTime()));
+	}
+
+	@ExceptionHandler(EnderecoNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> enderecoNotFoundException(EnderecoNotFoundException ex){
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
+				"Endereço não encontrado.",
+				HttpStatus.NOT_FOUND.value(),
 				Arrays.asList(ex.getMessage()),
 				new Date().getTime()));
 	}

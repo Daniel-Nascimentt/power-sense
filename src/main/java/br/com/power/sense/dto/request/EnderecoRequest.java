@@ -1,5 +1,6 @@
 package br.com.power.sense.dto.request;
 
+import br.com.power.sense.model.ContratanteModel;
 import br.com.power.sense.model.EnderecoModel;
 import br.com.power.sense.model.enums.EstadoEnum;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EnderecoRequest {
 
+    private Long id;
     @NotBlank
     private String rua;
     @NotNull
@@ -25,9 +27,22 @@ public class EnderecoRequest {
     private String cidade;
     @NotNull
     private EstadoEnum estado;
+    @NotBlank
+    private String cpfContratante;
+    @NotBlank
+    private String cep;
     
-    public EnderecoModel toModel() {
-    	return new EnderecoModel(this.rua, this.numero, this.bairro, this.cidade, this.estado);
+    public EnderecoModel toModel(ContratanteModel contratanteModel) {
+    	return new EnderecoModel(this.rua, this.numero, this.bairro, this.cidade, this.estado, this.cep, contratanteModel);
     }
 
+    public EnderecoModel toUpdate(EnderecoModel enderecoModel) {
+        enderecoModel.setRua(this.rua);
+        enderecoModel.setNumero(this.numero);
+        enderecoModel.setBairro(this.bairro);
+        enderecoModel.setCidade(this.cidade);
+        enderecoModel.setEstado(this.estado);
+
+        return enderecoModel;
+    }
 }

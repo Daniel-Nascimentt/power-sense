@@ -2,6 +2,7 @@ package br.com.power.sense.dto.response;
 
 import br.com.power.sense.model.EnderecoModel;
 import br.com.power.sense.model.enums.EstadoEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,18 +14,20 @@ import lombok.Setter;
 @Schema
 public class EnderecoResponse {
 
-    @NotNull
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
-    @NotBlank
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String rua;
-    @NotNull
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long numero;
-    @NotBlank
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bairro;
-    @NotBlank
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String cidade;
-    @NotNull
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private EstadoEnum estado;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String cep;
 
     public EnderecoResponse(EnderecoModel enderecoModel) {
         this.id = enderecoModel.getId();
@@ -33,5 +36,6 @@ public class EnderecoResponse {
         this.bairro = enderecoModel.getBairro();
         this.cidade = enderecoModel.getCidade();
         this.estado = enderecoModel.getEstado();
+        this.cep = enderecoModel.getCep();
     }
 }

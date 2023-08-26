@@ -2,7 +2,9 @@ package br.com.power.sense.controller;
 
 import br.com.power.sense.dto.request.EnderecoRequest;
 import br.com.power.sense.dto.response.EnderecoResponse;
+import br.com.power.sense.exceptions.CpfNotFoundException;
 import br.com.power.sense.exceptions.DatabaseException;
+import br.com.power.sense.service.EnderecoNotFoundException;
 import br.com.power.sense.service.EnderecoService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/enderecos")
@@ -23,7 +27,7 @@ public class EnderecoController {
 	}
 
 	@PostMapping(value = "/cadastrar")
-	public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest) {
+	public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest) throws CpfNotFoundException {
 
 		enderecoService.cadastrarEndereco(enderecoRequest);
 
@@ -31,34 +35,35 @@ public class EnderecoController {
 
 	}
 
-	@PutMapping(value = "/atualizar/{id}")
-	public ResponseEntity<?> atualizarEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoRequest enderecoRequest) {
+	@PutMapping(value = "/atualizar")
+	public ResponseEntity<?> atualizarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest) throws CpfNotFoundException, EnderecoNotFoundException {
 
-		enderecoService.atualizarEndereco(id, enderecoRequest);
+		enderecoService.atualizarEndereco(enderecoRequest);
 
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping(value = "/deletar/{id}")
-	public ResponseEntity<?> excluirEndereco(@PathVariable Long id) throws DatabaseException {
+	public ResponseEntity<?> excluirEndereco(@PathVariable Long id) throws EnderecoNotFoundException {
 
 		enderecoService.excluirEndereco(id);
 
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping(value = "/buscar/{id}")
-	public ResponseEntity<?> detalharEndereco(@PathVariable Long id) {
+	@GetMapping(value = "/buscar/{cep}")
+	public ResponseEntity<?> detalharEndereco(@PathVariable String cep) throws EnderecoNotFoundException {
 
-		EnderecoResponse enderecoResponse = enderecoService.buscarPorId(id);
+		List<EnderecoResponse> enderecoResponse = enderecoService.buscarPorCep(cep);
 
 		return ResponseEntity.ok().body(enderecoResponse);
 	}
     
-    @GetMapping(value = "/buscarTodos")
-    public Page<EnderecoResponse> listarTodos (@PageableDefault(size = 25) Pageable paginacao) {
+    @GetMapping(value = "/buscarTodos/{cpf}")
+    public ResponseEntity<List<EnderecoResponse>> listarTodosPorCpf(@PathVariable("cpf") String cpf) throws CpfNotFoundException {
 
-		return enderecoService.obterTodos(paginacao);
+		return ResponseEntity.ok(enderecoService.obterTodos(cpf));
+
 	}
 
 }

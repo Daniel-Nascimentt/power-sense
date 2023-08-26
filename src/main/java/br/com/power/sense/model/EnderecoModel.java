@@ -1,10 +1,7 @@
 package br.com.power.sense.model;
 
 import br.com.power.sense.model.enums.EstadoEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -18,7 +15,7 @@ import lombok.Setter;
 public class EnderecoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String rua;
@@ -29,13 +26,21 @@ public class EnderecoModel {
     @NotBlank
     private String cidade;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private EstadoEnum estado;
+    @NotBlank
+    private String cep;
+    @ManyToOne
+    private ContratanteModel contratante;
 
-    public EnderecoModel(@NotBlank String rua, @NotNull Long numero, @NotBlank String bairro, @NotBlank String cidade, @NotNull EstadoEnum estado) {
+
+    public EnderecoModel(@NotBlank String rua, @NotNull Long numero, @NotBlank String bairro, @NotBlank String cidade, @NotNull EstadoEnum estado, String cep, ContratanteModel contratante) {
         this.rua = rua;
         this.numero = numero;
         this.bairro = bairro;
         this.cidade = cidade;
         this.estado = estado;
+        this.cep = cep;
+        this.contratante = contratante;
     }
 }
