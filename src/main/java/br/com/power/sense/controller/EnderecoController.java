@@ -5,7 +5,6 @@ import br.com.power.sense.dto.response.EnderecoResponse;
 import br.com.power.sense.exceptions.DatabaseException;
 import br.com.power.sense.service.EnderecoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/enderecos")
 public class EnderecoController {
 
-	@Autowired
-	private EnderecoService enderecoService;
+	private final EnderecoService enderecoService;
+
+	public EnderecoController(EnderecoService enderecoService) {
+		this.enderecoService = enderecoService;
+	}
 
 	@PostMapping(value = "/cadastrar")
 	public ResponseEntity<?> cadastrarEndereco(@RequestBody @Valid EnderecoRequest enderecoRequest) {
@@ -54,7 +56,7 @@ public class EnderecoController {
 	}
     
     @GetMapping(value = "/buscarTodos")
-    public Page<EnderecoResponse> listarTodos (@PageableDefault(size = 10) Pageable paginacao) {
+    public Page<EnderecoResponse> listarTodos (@PageableDefault(size = 25) Pageable paginacao) {
 
 		return enderecoService.obterTodos(paginacao);
 	}
