@@ -82,10 +82,6 @@ public class EletrodomesticoService {
     }
 
 
-    public Page<EletrodomesticoResponse> obterTodos(Pageable paginacao) {
-         var eletrodomestico = repository.findAll(paginacao);
-    	 return eletrodomestico.map(eletro -> new EletrodomesticoResponse(eletro));    }
-
     public List<EletrodomesticoResponse> obterTodosPorCpf(String cpf) throws CpfNotFoundException {
 
         List<EletrodomesticoResponse> listResponse = new ArrayList<>();

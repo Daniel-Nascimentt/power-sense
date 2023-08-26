@@ -41,13 +41,6 @@ public class EletrodomesticoController {
 		return ResponseEntity.ok(eletrodomesticoResponse);
 	}
 
-    @GetMapping(value = "/buscarTodos")
-    public Page<EletrodomesticoResponse> listarEletrodomesticos (@PageableDefault(size = 10) Pageable paginacao){
-
-    	Page<EletrodomesticoResponse> eletrodomesticos = service.obterTodos(paginacao);
-
-        return eletrodomesticos;
-    }
 
 	@GetMapping(value = "/buscarTodos/{cpf}")
 	public ResponseEntity<List<EletrodomesticoResponse>> listarEletrodomesticosPorCPF(@PathVariable("cpf") String cpf) throws CpfNotFoundException {
