@@ -48,7 +48,7 @@ public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(EntityNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> ControllerNotFoundException(EntityNotFoundException ex){
+	public ResponseEntity<?> EntityNotFoundException(EntityNotFoundException ex){
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
 				"Entidade não encontrada",
@@ -64,39 +64,6 @@ public class ExceptionHandlerControllerAdvice {
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
 				"Nome não encontrado",
-				HttpStatus.NOT_FOUND.value(),
-				new ArrayList<>(),
-				new Date().getTime()));
-	}
-
-	@ExceptionHandler(DataNascimentoNotFoundException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> DataNascimentoNotFoundExceptionException(DataNascimentoNotFoundException ex){
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
-				"Data de Nascimento não encontrada",
-				HttpStatus.NOT_FOUND.value(),
-				new ArrayList<>(),
-				new Date().getTime()));
-	}
-
-	@ExceptionHandler(ParentescoNotFoundException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> ParentescoNotFoundExceptionException(ParentescoNotFoundException ex){
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
-				"Parentesco não encontrado",
-				HttpStatus.NOT_FOUND.value(),
-				new ArrayList<>(),
-				new Date().getTime()));
-	}
-
-	@ExceptionHandler(SexoNotFoundException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ResponseEntity<?> SexoNotFoundExceptionException(SexoNotFoundException ex){
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDetails(
-				"Sexo não encontrado",
 				HttpStatus.NOT_FOUND.value(),
 				new ArrayList<>(),
 				new Date().getTime()));

@@ -24,13 +24,25 @@ public class ContratanteRequest {
 	@CPF
 	private String cpf;
 	
-	@JsonFormat(pattern = "dd-MM-yyyy")	
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@NotNull
 	private LocalDate dataNascimento;
 	
 	@NotNull
 	private SexoEnum sexo;
-	
+
+	/**
+	 * Para uso do framework
+	 */
+	@Deprecated
+	public ContratanteRequest(){
+
+	}
+
+	public ContratanteRequest(String cpf) {
+		this.cpf = cpf;
+	}
+
 	public ContratanteModel toModel() {
 		return new ContratanteModel(this.nome, this.cpf, this.dataNascimento, this.sexo);
 	}
