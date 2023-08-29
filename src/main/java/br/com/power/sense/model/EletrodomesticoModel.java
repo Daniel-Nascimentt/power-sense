@@ -27,13 +27,15 @@ public class EletrodomesticoModel {
     private String modelo;
     @NotNull
     private Long potencia;
-    @Enumerated(EnumType.STRING)
     @NotNull
-    private VoltagemEnum voltagemEnum;
+    @Enumerated(EnumType.STRING)
+    private VoltagemEnum voltagem;
     @ManyToOne
     private ContratanteModel contratanteUtiliza;
     @ManyToMany
     private List<ResidenteModel> residentesUtilizam = new ArrayList<>();
+    @OneToOne(mappedBy = "eletrodomestico")
+    private ConsumoModel consumo;
 
     /**
      * Para uso do framework
@@ -43,11 +45,11 @@ public class EletrodomesticoModel {
 
     }
 
-	public EletrodomesticoModel(@NotBlank String nome, @NotBlank String modelo, @NotNull Long potencia, @NotNull VoltagemEnum voltagemEnum) {
+	public EletrodomesticoModel(@NotBlank String nome, @NotBlank String modelo, @NotNull Long potencia, @NotNull VoltagemEnum voltagem) {
 		this.nome = nome;
 		this.modelo = modelo;
 		this.potencia = potencia;
-		this.voltagemEnum = voltagemEnum;
+		this.voltagem = voltagem;
 	}
 
     public void addResidenteUtilizacao(ResidenteModel residenteModel){
@@ -67,6 +69,6 @@ public class EletrodomesticoModel {
         this.nome = eletrodomesticoRequest.getNome();
         this.modelo = eletrodomesticoRequest.getModelo();
         this.potencia = eletrodomesticoRequest.getPotencia();
-        this.voltagemEnum = eletrodomesticoRequest.getVoltagemEnum();
+        this.voltagem = eletrodomesticoRequest.getVoltagem();
     }
 }

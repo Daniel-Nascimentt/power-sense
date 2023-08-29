@@ -16,7 +16,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EnderecoRequest {
 
-    private Long id;
     @NotBlank
     private String rua;
     @NotNull

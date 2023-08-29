@@ -3,6 +3,7 @@ package br.com.power.sense.controller;
 import java.net.URI;
 import java.util.List;
 
+import br.com.power.sense.dto.request.ConsumoRequest;
 import br.com.power.sense.exceptions.CpfNotFoundException;
 import br.com.power.sense.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,22 @@ public class EletrodomesticoController {
 	public ResponseEntity<?> excluirEletrodomestico(@PathVariable("id") Long id) throws DatabaseException {
 		service.excluirEletrodomestico(id);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/consumo/{idEletrodomestico}")
+	public ResponseEntity<?> obterConsumoEletrodomestico(@PathVariable(value = "idEletrodomestico") Long id) {
+
+		EletrodomesticoResponse eletrodomesticoResponse = service.obterConsumoEletrodomestico(id);
+
+		return ResponseEntity.ok(eletrodomesticoResponse);
+	}
+
+	@PostMapping(value = "/consumo/{idEletrodomestico}")
+	public ResponseEntity<?> reportarConsumo(@RequestBody @Valid ConsumoRequest consumoRequest){
+
+		service.reportarConsumoEletrodomestico(consumoRequest);
+
+		return ResponseEntity.ok().build();
+
 	}
 }

@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.power.sense.dto.request.ConsumoRequest;
 import br.com.power.sense.exceptions.CpfNotFoundException;
 import br.com.power.sense.exceptions.DatabaseException;
+import br.com.power.sense.model.ConsumoModel;
 import br.com.power.sense.model.ContratanteModel;
 import br.com.power.sense.model.EletrodomesticoModel;
 import br.com.power.sense.model.ResidenteModel;
+import br.com.power.sense.model.repository.ConsumoRepository;
 import br.com.power.sense.model.repository.ContratanteRepository;
 import br.com.power.sense.model.repository.EletrodomesticoRepository;
 import br.com.power.sense.model.repository.ResidenteRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.power.sense.dto.request.EletrodomesticoRequest;
@@ -37,10 +35,13 @@ public class EletrodomesticoService {
     @Autowired
     private ResidenteRepository residenteRepository;
 
+    @Autowired
+    private ConsumoRepository consumoRepository;
+
     public EletrodomesticoResponse cadastrarEletrodomestico(EletrodomesticoRequest eletrodomesticoRequest){
         EletrodomesticoModel eletrodomestico = eletrodomesticoRequest.toModel(contratanteRepository, residenteRepository);
         var eletroSave = repository.save(eletrodomestico);
-        return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletroSave);
+        return new EletrodomesticoResponse().toResponseEletroDomesticoAllConsumidores(eletroSave);
     }
 
      public EletrodomesticoResponse atualizarEletrodomestico(EletrodomesticoRequest eletrodomesticoRequest){
@@ -55,13 +56,13 @@ public class EletrodomesticoService {
             if(eletrodomesticoRequest.getUtilizadoPorCpfs().isEmpty()){
                 eletrodomesticoModel.toUpdateEletro(eletrodomesticoRequest);
                 repository.save(eletrodomesticoModel);
-                return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletrodomesticoModel);
+                return new EletrodomesticoResponse().toResponseEletroDomesticoAllConsumidores(eletrodomesticoModel);
             }
 
             eletrodomesticoModel.toUpdateAll(eletrodomesticoRequest, contratanteRepository, residenteRepository);
             repository.save(eletrodomesticoModel);
 
-            return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletrodomesticoModel);
+            return new EletrodomesticoResponse().toResponseEletroDomesticoAllConsumidores(eletrodomesticoModel);
 
     }
 
@@ -78,7 +79,7 @@ public class EletrodomesticoService {
     public EletrodomesticoResponse obterEletrodomesticoPorId(Long id) {
         Optional<EletrodomesticoModel> eletrodomestico = repository.findById(id);
         validaSeEletrodomesticoExiste(eletrodomestico);
-        return new EletrodomesticoResponse().toResponseEletroDomesticoAll(eletrodomestico.get());
+        return new EletrodomesticoResponse().toResponseEletroDomesticoAllConsumidores(eletrodomestico.get());
     }
 
 
@@ -112,5 +113,38 @@ public class EletrodomesticoService {
         if(!eletrodomestico.isPresent()){
             throw new EntityNotFoundException("Eletrodomestico não encontrado!");
         }
+    }
+
+    public EletrodomesticoResponse obterConsumoEletrodomestico(Long id) {
+
+        Optional<EletrodomesticoModel> eletrodomestico = repository.findById(id);
+
+        validaSeEletrodomesticoExiste(eletrodomestico);
+
+        Optional<ConsumoModel> consumo = consumoRepository.findByEletrodomestico(eletrodomestico.get());
+
+        if(consumo.isPresent()){
+            return new EletrodomesticoResponse().toResponseAllInformations(eletrodomestico.get(), consumo.get());
+        }
+
+        throw new EntityNotFoundException("Consumo do eletrodomestico não encontrado.");
+
+    }
+
+    public void reportarConsumoEletrodomestico(ConsumoRequest consumoRequest) {
+
+        Optional<EletrodomesticoModel> eletrodomestico = repository.findById(consumoRequest.getIdEletroDomestico());
+
+        validaSeEletrodomesticoExiste(eletrodomestico);
+
+        Optional<ConsumoModel> consumo = consumoRepository.findByEletrodomestico(eletrodomestico.get());
+
+        if(!consumo.isPresent()){
+            consumoRepository.save(consumoRequest.toModel(eletrodomestico.get()));
+            return;
+        }
+
+        consumoRepository.save(consumo.get().toUpdate(consumoRequest, eletrodomestico.get()));
+
     }
 }

@@ -1,5 +1,6 @@
 package br.com.power.sense.dto.response;
 
+import br.com.power.sense.model.ConsumoModel;
 import br.com.power.sense.model.EletrodomesticoModel;
 import br.com.power.sense.model.enums.VoltagemEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,7 +28,10 @@ public class EletrodomesticoResponse {
     private Long potencia;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private VoltagemEnum voltagemEnum;
+    private VoltagemEnum voltagem;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private ConsumoResponse consumo;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ContratanteResponse contratanteUtiliza;
@@ -39,14 +43,14 @@ public class EletrodomesticoResponse {
     public EletrodomesticoResponse() {
     }
 
-    public EletrodomesticoResponse(EletrodomesticoModel eletroSave) {
+    public EletrodomesticoResponse(EletrodomesticoModel eletrodomestico) {
 
-        toResponse(eletroSave);
+        toResponse(eletrodomestico);
 
     }
 
 
-    public EletrodomesticoResponse toResponseEletroDomesticoAll(EletrodomesticoModel eletroSave) {
+    public EletrodomesticoResponse toResponseEletroDomesticoAllConsumidores(EletrodomesticoModel eletroSave) {
 
         toResponse(eletroSave);
 
@@ -61,11 +65,18 @@ public class EletrodomesticoResponse {
         return this;
     }
 
-    public void toResponse(EletrodomesticoModel eletroSave) {
-        this.id = eletroSave.getId();
-        this.nome = eletroSave.getNome();
-        this.modelo = eletroSave.getModelo();
-        this.potencia = eletroSave.getPotencia();
-        this.voltagemEnum = eletroSave.getVoltagemEnum();
+    public void toResponse(EletrodomesticoModel eletrodomestico) {
+        this.id = eletrodomestico.getId();
+        this.nome = eletrodomestico.getNome();
+        this.modelo = eletrodomestico.getModelo();
+        this.potencia = eletrodomestico.getPotencia();
+        this.voltagem = eletrodomestico.getVoltagem();
+    }
+
+    public EletrodomesticoResponse toResponseAllInformations(EletrodomesticoModel eletrodomestico, ConsumoModel consumo) {
+        this.toResponseEletroDomesticoAllConsumidores(eletrodomestico);
+        this.consumo = new ConsumoResponse(consumo);
+
+        return this;
     }
 }

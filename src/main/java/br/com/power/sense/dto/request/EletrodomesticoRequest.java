@@ -19,7 +19,6 @@ import java.util.Optional;
 @Setter
 public class EletrodomesticoRequest {
 
-    private Long id;
 	@NotBlank
     private String nome;
     @NotBlank
@@ -27,13 +26,13 @@ public class EletrodomesticoRequest {
     @NotNull
     private Long potencia;
     @NotNull
-    private VoltagemEnum voltagemEnum;
+    private VoltagemEnum voltagem;
 
     List<String> utilizadoPorCpfs = new ArrayList<>();
     
     public EletrodomesticoModel toModel(ContratanteRepository contratanteRepository, ResidenteRepository residenteRepository) {
 
-        EletrodomesticoModel eletroModel = new EletrodomesticoModel(this.nome, this.modelo, this.potencia, this.voltagemEnum);
+        EletrodomesticoModel eletroModel = new EletrodomesticoModel(this.nome, this.modelo, this.potencia, this.voltagem);
 
         toModelContratanteEResidente(contratanteRepository, residenteRepository, eletroModel);
 
