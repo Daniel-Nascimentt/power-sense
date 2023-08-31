@@ -1,23 +1,27 @@
 package br.com.power.sense.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.com.power.sense.dto.request.EnderecoRequest;
 import br.com.power.sense.dto.response.EnderecoResponse;
 import br.com.power.sense.exceptions.CpfNotFoundException;
-import br.com.power.sense.exceptions.DatabaseException;
 import br.com.power.sense.service.EnderecoNotFoundException;
 import br.com.power.sense.service.EnderecoService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
-@RequestMapping("/enderecos")
+@RequestMapping("/endereco")
 public class EnderecoController {
 
 	private final EnderecoService enderecoService;
@@ -51,7 +55,7 @@ public class EnderecoController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping(value = "/buscar/{cep}")
+	@GetMapping(value = "/buscarTodos/{cep}")
 	public ResponseEntity<?> detalharEndereco(@PathVariable String cep) throws EnderecoNotFoundException {
 
 		List<EnderecoResponse> enderecoResponse = enderecoService.buscarPorCep(cep);
@@ -59,10 +63,10 @@ public class EnderecoController {
 		return ResponseEntity.ok().body(enderecoResponse);
 	}
     
-    @GetMapping(value = "/buscarTodos/{cpf}")
-    public ResponseEntity<List<EnderecoResponse>> listarTodosPorCpf(@PathVariable("cpf") String cpf) throws CpfNotFoundException {
+    @GetMapping(value = "/buscar/{cpf}")
+    public ResponseEntity<List<EnderecoResponse>> buscarPorCpf(@PathVariable("cpf") String cpf) throws CpfNotFoundException {
 
-		return ResponseEntity.ok(enderecoService.obterTodos(cpf));
+		return ResponseEntity.ok(enderecoService.buscarPorCpf(cpf));
 
 	}
 

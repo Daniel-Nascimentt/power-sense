@@ -41,7 +41,7 @@ public class ResidenteRequest {
 	@NotNull
 	private String cpfContratante;
 	
-	public ResidenteModel toModel(ContratanteRepository contratanteRepository) throws CpfNotFoundException {
+	public ResidenteModel toModelAndFindContratante(ContratanteRepository contratanteRepository) throws CpfNotFoundException {
 
 		Optional<ContratanteModel> contratante = contratanteRepository.findByCpf(this.cpfContratante);
 
@@ -56,4 +56,5 @@ public class ResidenteRequest {
 				this.parentescoComContratante,
 				contratante.get());
 	}
+	
 }

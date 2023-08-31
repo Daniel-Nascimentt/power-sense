@@ -1,20 +1,21 @@
 package br.com.power.sense.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.com.power.sense.dto.request.EnderecoRequest;
 import br.com.power.sense.dto.response.EnderecoResponse;
 import br.com.power.sense.exceptions.CpfNotFoundException;
 import br.com.power.sense.model.ContratanteModel;
 import br.com.power.sense.model.EnderecoModel;
+import br.com.power.sense.model.ResidenteModel;
 import br.com.power.sense.model.repository.ContratanteRepository;
 import br.com.power.sense.model.repository.EnderecoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import br.com.power.sense.model.repository.ResidenteRepository;
 
 @Service
 public class EnderecoService {
@@ -24,6 +25,9 @@ public class EnderecoService {
 
     @Autowired
     private ContratanteRepository contratanteRepository;
+    
+    @Autowired
+    private ResidenteRepository residenteRepository;
 
     public void cadastrarEndereco(EnderecoRequest enderecoRequest) throws CpfNotFoundException {
 
@@ -33,9 +37,8 @@ public class EnderecoService {
             throw new CpfNotFoundException("CPF do Contratante não localizado");
         }
 
-        EnderecoModel enderecoModel = enderecoRequest.toModel(contratante.get());
+        enderecoRequest.toModelAndSave(contratante.get(), residenteRepository, enderecoRepository);
 
-        enderecoRepository.save(enderecoModel);
     }
 
     public void atualizarEndereco(EnderecoRequest enderecoRequest) throws CpfNotFoundException, EnderecoNotFoundException {
@@ -52,7 +55,7 @@ public class EnderecoService {
             throw new EnderecoNotFoundException("Endereço não localizado");
         }
 
-        enderecoRepository.save(enderecoRequest.toUpdate(endereco.get()));
+        enderecoRequest.toUpdateAndSave(endereco.get(), residenteRepository, enderecoRepository);
 
     }
 
@@ -80,22 +83,28 @@ public class EnderecoService {
         return listResponse;
     }
 
-    public List<EnderecoResponse> obterTodos(String cpf) throws CpfNotFoundException {
+    public List<EnderecoResponse> buscarPorCpf(String cpf) throws CpfNotFoundException {
 
         List<EnderecoResponse> listResponse = new ArrayList<>();
 
         Optional<ContratanteModel> contratante = contratanteRepository.findByCpf(cpf);
 
-        if(!contratante.isPresent()){
-            throw new CpfNotFoundException("CPF do Contratante não localizado");
+        if(contratante.isPresent()){
+        	 var endereco = enderecoRepository.findByContratante(contratante.get());
+             endereco.forEach(end -> listResponse.add(new EnderecoResponse(end)));
+             return listResponse;
+        }
+        
+        Optional<ResidenteModel> residente = residenteRepository.findByCpf(cpf);
+
+        if(residente.isPresent()){
+        	var endereco = enderecoRepository.findByResidente(residente.get());
+            endereco.forEach(end -> listResponse.add(new EnderecoResponse(end)));
+            return listResponse;
         }
 
-        var endereco = enderecoRepository.findByContratante(contratante.get());
+        throw new CpfNotFoundException("CPF não localizado");
 
-
-        endereco.forEach(end -> listResponse.add(new EnderecoResponse(end)));
-
-        return listResponse;
 
     }
 }

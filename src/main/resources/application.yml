@@ -13,9 +13,9 @@ spring:
       ddl-auto: update
   flyway:
     baseline-on-migrate: true
-  sql:
-    init:
-      mode: ALWAYS
+#  sql:
+#    init:
+#      mode: ALWAYS
 
 server:
   error:

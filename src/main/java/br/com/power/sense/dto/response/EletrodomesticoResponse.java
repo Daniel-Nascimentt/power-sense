@@ -39,7 +39,6 @@ public class EletrodomesticoResponse {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResidenteResponse> residentesUtilizam = new ArrayList<>();
 
-
     public EletrodomesticoResponse() {
     }
 
@@ -49,16 +48,16 @@ public class EletrodomesticoResponse {
 
     }
 
+    public EletrodomesticoResponse toResponseEletroDomesticoAllConsumidores(EletrodomesticoModel eletro) {
 
-    public EletrodomesticoResponse toResponseEletroDomesticoAllConsumidores(EletrodomesticoModel eletroSave) {
+        toResponse(eletro);
 
-        toResponse(eletroSave);
-
-        if(eletroSave.getContratanteUtiliza() != null) {
-            this.contratanteUtiliza = new ContratanteResponse().toResponseEletrodomestico(eletroSave.getContratanteUtiliza());
+        if (eletro.getContratanteUtiliza() != null) {
+            this.contratanteUtiliza = new ContratanteResponse()
+                    .toResponseEletrodomestico(eletro.getContratanteUtiliza());
         }
 
-        eletroSave.getResidentesUtilizam().forEach(resid -> {
+        eletro.getResidentesUtilizam().forEach(resid -> {
             this.residentesUtilizam.add(new ResidenteResponse().toResponseEletrodomestico(resid));
         });
 
@@ -73,7 +72,8 @@ public class EletrodomesticoResponse {
         this.voltagem = eletrodomestico.getVoltagem();
     }
 
-    public EletrodomesticoResponse toResponseAllInformations(EletrodomesticoModel eletrodomestico, ConsumoModel consumo) {
+    public EletrodomesticoResponse toResponseAllInformations(EletrodomesticoModel eletrodomestico,
+            ConsumoModel consumo) {
         this.toResponseEletroDomesticoAllConsumidores(eletrodomestico);
         this.consumo = new ConsumoResponse(consumo);
 

@@ -32,8 +32,10 @@ public class EnderecoModel {
     private String cep;
     @ManyToOne
     private ContratanteModel contratante;
+    @OneToOne
+    private ResidenteModel residente;
 
-
+    
     public EnderecoModel(@NotBlank String rua, @NotNull Long numero, @NotBlank String bairro, @NotBlank String cidade, @NotNull EstadoEnum estado, String cep, ContratanteModel contratante) {
         this.rua = rua;
         this.numero = numero;
@@ -43,4 +45,17 @@ public class EnderecoModel {
         this.cep = cep;
         this.contratante = contratante;
     }
+    
+    public EnderecoModel(@NotBlank String rua, @NotNull Long numero, @NotBlank String bairro, @NotBlank String cidade, @NotNull EstadoEnum estado, String cep, ContratanteModel contratante, ResidenteModel residente) {
+        this.rua = rua;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.contratante = contratante;
+        this.residente = residente;
+    }
+
+
 }

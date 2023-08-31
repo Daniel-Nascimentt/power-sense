@@ -3,13 +3,7 @@ package br.com.power.sense.controller;
 import java.net.URI;
 import java.util.List;
 
-import br.com.power.sense.dto.request.ConsumoRequest;
-import br.com.power.sense.exceptions.CpfNotFoundException;
-import br.com.power.sense.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.power.sense.dto.request.ConsumoRequest;
 import br.com.power.sense.dto.request.EletrodomesticoRequest;
 import br.com.power.sense.dto.response.EletrodomesticoResponse;
+import br.com.power.sense.exceptions.CpfNotFoundException;
+import br.com.power.sense.exceptions.DatabaseException;
 import br.com.power.sense.service.EletrodomesticoService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping("/eletrodomesticos")
+@RequestMapping("/eletrodomestico")
 public class EletrodomesticoController {
 
     @Autowired
@@ -72,7 +68,7 @@ public class EletrodomesticoController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/consumo/{idEletrodomestico}")
+	@GetMapping("/obterCoonsumo/{idEletrodomestico}")
 	public ResponseEntity<?> obterConsumoEletrodomestico(@PathVariable(value = "idEletrodomestico") Long id) {
 
 		EletrodomesticoResponse eletrodomesticoResponse = service.obterConsumoEletrodomestico(id);
@@ -80,7 +76,7 @@ public class EletrodomesticoController {
 		return ResponseEntity.ok(eletrodomesticoResponse);
 	}
 
-	@PostMapping(value = "/consumo/{idEletrodomestico}")
+	@PostMapping(value = "/reportarConsumo")
 	public ResponseEntity<?> reportarConsumo(@RequestBody @Valid ConsumoRequest consumoRequest){
 
 		service.reportarConsumoEletrodomestico(consumoRequest);

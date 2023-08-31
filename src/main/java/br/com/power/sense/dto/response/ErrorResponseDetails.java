@@ -2,6 +2,9 @@ package br.com.power.sense.dto.response;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema
 public class ErrorResponseDetails {
 	
 	private String titulo;

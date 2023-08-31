@@ -88,40 +88,21 @@ public class PessoasService {
             throw new ResidenteInvalidoException("Esse CPF já é cadastrado como contratante.");
         }
 
-        ResidenteModel residente = request.toModel(contratanteRepository);
+        ResidenteModel residente = request.toModelAndFindContratante(contratanteRepository);
 
-        Optional<ContratanteModel> possivelContratanteVinculado =
-                contratanteRepository.findByCpf(residente.getContratante().getCpf());
-
-        if (possivelContratanteVinculado.isEmpty()) {
-            throw new CpfNotFoundException("CPF do Contratante não localizado");
-        }
-
-        residente.getContratante().setId(possivelContratanteVinculado.get().getId());
         residenteRepository.save(residente);
 
     }
 
     public void atualizarResidente(String cpf, ResidenteRequest request) throws CpfNotFoundException {
 
-        ResidenteModel residenteModel = request.toModel(contratanteRepository);
+        ResidenteModel residenteModel = request.toModelAndFindContratante(contratanteRepository);
 
         Optional<ResidenteModel> possivelResidente = residenteRepository.findByCpf(cpf);
 
-        if (possivelResidente.isEmpty()) {
-            throw new CpfNotFoundException("CPF do Residente não localizado");
+        if (!possivelResidente.isPresent()) {
+            throw new CpfNotFoundException("CPF do Residente não localizado para atualização.");
         }
-
-        residenteModel.setId(possivelResidente.get().getId());
-
-        Optional<ContratanteModel> possivelContratanteVinculado =
-                contratanteRepository.findByCpf(residenteModel.getContratante().getCpf());
-
-        if (possivelContratanteVinculado.isEmpty()) {
-            throw new CpfNotFoundException("CPF do Contratante não localizado");
-        }
-
-        residenteModel.getContratante().setId(possivelContratanteVinculado.get().getId());
 
         residenteRepository.save(residenteModel);
 

@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/pessoas")
+@RequestMapping(value = "/pessoa")
 public class PessoasController {
 
     @Autowired
@@ -67,7 +67,7 @@ public class PessoasController {
     }
 
 
-    @PutMapping(value = "/atualizarResidente/{cpf}")
+    @PutMapping(value = "/atualizarResidente")
     public ResponseEntity<?> atualizarResidente(@PathVariable("cpf") String cpf, @RequestBody @Valid ResidenteRequest request) throws CpfNotFoundException {
 
         pessoasService.atualizarResidente(cpf, request);

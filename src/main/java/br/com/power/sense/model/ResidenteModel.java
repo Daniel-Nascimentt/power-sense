@@ -34,6 +34,9 @@ public class ResidenteModel{
 	@ManyToMany(mappedBy = "residentesUtilizam")
 	private List<EletrodomesticoModel> eletrosUtilizados;
 	
+	@OneToOne(mappedBy = "residente")
+	private EnderecoModel endereco;
+	
 	public ResidenteModel() {
 	}
 

@@ -19,6 +19,8 @@ import java.util.Optional;
 @Setter
 public class EletrodomesticoRequest {
 
+	
+	private Long id;
 	@NotBlank
     private String nome;
     @NotBlank
