@@ -4,7 +4,7 @@
 
 - <a>Start no projeto</a>
 - <a>Tecnologias utilizadas</a>
-- <a>Decisões de encapsulamento</a>
+- <a>Decisões e encapsulamento</a>
 - <a>Regras de negócio importantes</a>
 - <a>Yaml para visualização dos endpoints no editor.swagger</a>
 
@@ -47,11 +47,13 @@
 * Docker (Para subir um container com mysql)
 #
 
-## Decisões de encapsulamento ✍🏻
+## Decisões e encapsulamento ✍🏻
 
 Em código adotamos alguns padrões de encapsulamento, criando alguns métodos que auxiliam na conversão de objetos, por exemplo, de uma *Request* para um *Model*. Ou de um *Model* para um *Response*. Ambos os métodos auxiliares são retornados em endpoints especificos. Por exemplo, em um endpoint de consumo, é possivel visualizar as informações do eletrodomestico, quem utiliza e quanto que foi consumido. Dessa forma cada endpoint retorna somente o que definimos ser relevante.
 
 Um ponto importante que vai de acordo com encapsulamento e não torna o simples tão complexo, optamos pode deixar nossas classes de Model representar nossas entidades no banco de dados, por se tratar de poucas entidades e sem a necessidade de ter uma classe model e uma entidade separadas.
+
+Sobre validações e mensagens em caso de exceção, criamos um handler onde mapeamos os casos mais comuns e possiveis de acontecer, mas também mapeamos um caso genérico para não expor dados sensíveis como stacktrace no response.
 
 Trecho de exemplo:
 
