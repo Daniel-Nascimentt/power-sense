@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import br.com.power.sense.service.EnderecoNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import br.com.power.sense.exceptions.*;
 import org.springframework.core.convert.ConversionFailedException;

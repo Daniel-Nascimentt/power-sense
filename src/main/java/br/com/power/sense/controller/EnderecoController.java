@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.power.sense.dto.request.EnderecoRequest;
 import br.com.power.sense.dto.response.EnderecoResponse;
 import br.com.power.sense.exceptions.CpfNotFoundException;
-import br.com.power.sense.service.EnderecoNotFoundException;
+import br.com.power.sense.exceptions.EnderecoNotFoundException;
 import br.com.power.sense.service.EnderecoService;
 import jakarta.validation.Valid;
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.power.sense.dto.request.EnderecoRequest;
 import br.com.power.sense.dto.response.EnderecoResponse;
 import br.com.power.sense.exceptions.CpfNotFoundException;
+import br.com.power.sense.exceptions.EnderecoNotFoundException;
 import br.com.power.sense.model.ContratanteModel;
 import br.com.power.sense.model.EnderecoModel;
 import br.com.power.sense.model.ResidenteModel;
